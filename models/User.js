@@ -16,10 +16,6 @@ const UserSchema = Schema({
         required: [true, 'La contraseña es obligatoria']
     },
     role: {
-        // type: String,
-        // required: true,
-        // emun: ['ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE']
-        // emun: ['ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE']
         type: Schema.Types.ObjectId,
         ref: 'Role',
         required: true,
@@ -39,7 +35,9 @@ const UserSchema = Schema({
 });
 
 UserSchema.methods.toJSON = function () {
-    const { __v, password, ...user } = this.toObject();
+    const { __v, _id, password, ...user } = this.toObject();
+    user.uid = _id;
+    
     return user;
 }
 
