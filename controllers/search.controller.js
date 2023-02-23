@@ -15,11 +15,27 @@ const searchUsers = async (term = '', res = response) => {
     const itsMongoID = ObjectId.isValid(term); // TRUE
 
     if (itsMongoID) {
-        const user = await User.findById(term);
+        const user = await User.findById(term)
+                        .populate('role', ['role'])
+                        .populate('person', ['names'])
+
         return res.json({
             results: (user) ? [user] : []
         });
     }
+
+    const regex = new RegExp(term, 'i');
+
+    const users = await User.find({ 
+        $or: [{ name: regex }],
+        $and: [{ state: true }]
+     })
+        .populate('role', ['role'])
+        .populate('person', ['names'])
+
+    res.json({
+        results: users
+    });
 
 }
 
