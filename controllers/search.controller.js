@@ -28,9 +28,11 @@ const searchUsers = async (term = '', res = response) => {
 
     const users = await User.find({ 
         $or: [{ name: regex }],
+        // $or: [{ role: regex }],
         $and: [{ state: true }]
      })
-        .populate('role', ['role'])
+        .populate({ path: 'role', match: { role: regex } })
+        // .populate('role', ['role'])
         .populate('person', ['names'])
 
     res.json({

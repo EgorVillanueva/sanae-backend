@@ -41,16 +41,44 @@ const { Patient, Person } = require('../models');
 const createPatient = async (req, res) => {
 
     let data = req.body
-    let details = JSON.parse(data.details)
-    console.log(details);
+    let personDB = await new Person();
+    personDB.names = data.names;
+    personDB.first_surname = data.first_surname;
+    personDB.second_surname = data.second_surname;
+   
+    personDB.save((err, person_save) => {
+        console.log(person_save);
+        if (person_save) {
+            const details = data.detalles;
 
-    let personDB = await Person.create(data);
+            details.forEach((element, index) => {
+                console.log(element);
+                const patient =  new Patient();
+                patient.medical_history_number = element.medical_history_number
+                patient.person = person_save._id;
+                patient.save((err, patient) => {
+                    if (patient) {
+                        res.status(201).json({
+                            patient
+                        })
+                    } else {
+                        res.send(err);
+                    }
+                });
+            });
+
+        } else {
+            res.send(err);
+        }
+        
+    })
+
 
     // Creación de paciente
-    for (let item of details) {
-        item.person = personDB._id;
-        await Patient.create(item)
-    }
+    // for (let item of details) {
+    //     item.person = personDB._id;
+    //     await Patient.create(item)
+    // }
 
     res.status(201).json(personDB);
 
