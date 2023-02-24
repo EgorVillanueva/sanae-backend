@@ -13,11 +13,12 @@ class Server {
         // this.authPath = '/api/auth';
 
         this.paths = {
-            users: '/api/users',
+            auth: '/api/auth',
+            patients: '/api/patients',
             persons: '/api/persons',
             roles: '/api/roles',
-            auth: '/api/auth',
-            search: '/api/search'
+            search: '/api/search',
+            users: '/api/users',
         };
 
         // Conectar a base de datos
@@ -53,10 +54,11 @@ class Server {
         // this.app.use(this.usersPath, require('../routes/users.routes'));
 
         this.app.use(this.paths.auth, require('../routes/auth.routes'));
+        this.app.use(this.paths.patients, require('../routes/patients.routes'));
         this.app.use(this.paths.persons, require('../routes/persons.routes'));
         this.app.use(this.paths.roles, require('../routes/roles.routes'));
-        this.app.use(this.paths.users, require('../routes/users.routes'));
         this.app.use(this.paths.search, require('../routes/search.routes'));
+        this.app.use(this.paths.users, require('../routes/users.routes'));
     }
 
     listen() {

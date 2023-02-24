@@ -20,6 +20,8 @@ const createPerson = async (req, res) => {
     // Guardar DB
     await person.save();
 
+    //
+
     res.status(201).json(person);
 
 }
