@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const { Schema, model } = require('mongoose');
 
-const UserSchema = new Schema({
+const UserSchema = Schema({
     person: {
         type: Schema.Types.ObjectId,
         ref: 'Person',
@@ -38,10 +37,10 @@ const UserSchema = new Schema({
 UserSchema.methods.toJSON = function () {
     const { __v, _id, password, ...user } = this.toObject();
     user.uid = _id;
-    
+
     return user;
 }
 
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = model('User', UserSchema);
 // User.createIndexes();

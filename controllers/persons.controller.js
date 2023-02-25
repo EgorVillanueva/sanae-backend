@@ -1,28 +1,41 @@
 const { response } = require("express");
 
-const { Person } = require('../models');
+const { Person, Patient } = require('../models');
 
 const createPerson = async (req, res) => {
 
-    const first_surname = req.body.first_surname.toUpperCase();
-    const second_surname = req.body.second_surname.toUpperCase();
-    const names = req.body.names.toUpperCase();
+    // Creación de persona
+    const { state, user, ...body } = req.body;
 
     // Generar data a guardar
     const data = {
-        first_surname,
-        second_surname,
-        names
+        ...body,
+        first_surname: body.first_surname.toUpperCase(),
+        second_surname: body.second_surname.toUpperCase(),
+        names: body.names.toUpperCase(),
+        document_type: body.document_type.toUpperCase(),
+        user: req.user._id
     };
 
-    const person = new Person(data);
+    const personDB = new Person(data);
+    // const personDB = await Person.create(data);
 
     // Guardar DB
-    await person.save();
+    await personDB.save();
 
-    //
+    // Creación de paciente
+    const person = personDB._id;
+    const { medical_history_number } = req.body;
 
-    res.status(201).json(person);
+    const dataPatient = {
+        medical_history_number,
+        person
+    }
+
+    const patient = new Patient(dataPatient);
+    await patient.save();
+
+    res.status(201).json({ personDB, patient });
 
 }
 

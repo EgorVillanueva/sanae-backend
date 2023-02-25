@@ -2,9 +2,9 @@ const { Role, User, Person } = require('../models');
 
 // Rol válido
 const itsValidRole = async (role = '') => {
-    
+
     const existsRole = await Role.findById({ _id: role });
-    
+
     if (!existsRole) {
         throw new Error(`El rol ${role} no está registrado en la BD`);
     }
@@ -15,19 +15,19 @@ const itsValidPerson = async (person = '') => {
 
     if (person) {
         const existsPerson = await Person.findById({ _id: person });
-        
+
         if (!existsPerson) {
             throw new Error(`La persona ${person} no está registrado en la BD`);
         }
     }
-    
+
 }
 
 // Verificar si existe persona para login
 const existsPersonUser = async (person = '') => {
     if (person) {
         const data = await User.findOne({ person });
-    
+
         if (data) {
             throw new Error(`Esta persona ya está registrada`);
         }
@@ -61,7 +61,7 @@ const userExistsById = async (id) => {
 // Verificar si existe documento
 const existsDocument = async (document = '') => {
 
-    const data = await User.findOne({ document });
+    const data = await Person.findOne({ document_number: document });
 
     if (data) {
         throw new Error(`El número de documento ${document} ya está registrado`);
@@ -69,11 +69,23 @@ const existsDocument = async (document = '') => {
 
 }
 
+// Verificar si existe email
+const existsEmail = async (email = '') => {
+
+    const data = await Person.findOne({ email });
+
+    if (data) {
+        throw new Error(`El correo electrónico ${email} ya está registrado`);
+    }
+
+}
+
 module.exports = {
-    itsValidRole,
-    itsValidPerson,
+    existsEmail,
     existsDocument,
-    userExistsById,
+    existsNameUser,
     existsPersonUser,
-    existsNameUser
+    itsValidPerson,
+    itsValidRole,
+    userExistsById,
 }
