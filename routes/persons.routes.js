@@ -2,11 +2,12 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { validateFields } = require('../middlewares/validate-fields');
-const { validateJWT, hasRole } = require('../middlewares');
+const { validateJWT, hasRole, validateFileUpload } = require('../middlewares');
 const { existsDocument, existsEmail } = require('../helpers/db-validators');
 
 const {
     createPerson,
+    updatePerson
 } = require('../controllers/persons.controller');
 
 const router = Router();
@@ -22,5 +23,14 @@ router.post('/', [
     check('email').custom(existsEmail),
     validateFields
 ], createPerson);
+
+router.put('/:id', [
+    validateJWT,
+    validateFileUpload,
+    hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
+    check('document_number').custom(existsDocument),
+    check('email').custom(existsEmail),
+    validateFields
+], updatePerson);
 
 module.exports = router;

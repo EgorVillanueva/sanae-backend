@@ -46,7 +46,7 @@ const PersonSchema = Schema({
         type: String,
         unique: true
     },
-    img: {
+    file: {
         type: String
     },
     state: {
