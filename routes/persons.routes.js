@@ -7,10 +7,24 @@ const { existsDocument, existsEmail } = require('../helpers/db-validators');
 
 const {
     createPerson,
+    getPersons,
+    watchPerson,
     updatePerson
 } = require('../controllers/persons.controller');
 
 const router = Router();
+
+router.get('/', [
+    validateJWT,
+    hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
+], getPersons);
+
+router.get('/:id', [
+    validateJWT,
+    hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
+    check('id', 'No es un ID válido').isMongoId(),
+    validateFields
+], watchPerson);
 
 router.post('/', [
     validateJWT,

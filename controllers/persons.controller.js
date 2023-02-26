@@ -4,6 +4,56 @@ const fs = require('fs');
 const { uploadFile } = require("../helpers");
 const { Person, Patient } = require('../models');
 
+const getPersons = async (req, res) => {
+
+    const pat = await Patient.find()
+        .populate('person', [
+            'names',
+            'first_surname',
+            'second_surname',
+            'document_type',
+            'document_number'
+        ]);
+
+    // const { limit = 1, since = 0 } = req.query;
+    // const query = { state: true };
+
+    // const [total, patients] = await Promise.all([
+    //     Patient.countDocuments(query),
+    //     Patient.find(query)
+    //         .skip(Number(since))
+    //         .limit(Number(limit))
+    // ]);
+
+    res.json({
+        pat
+    });
+
+}
+
+const watchPerson = async (req, res) => {
+
+    const { id } = req.params;
+
+    const person = await Person.findById({ _id: id })
+
+    const patient = await Patient.findOne({ 'person': id });
+
+    // Mostrar imagen
+    // const { file } = await Person.findById({ _id: id });
+
+    // if (file) {
+    //     const pathImage = path.join(__dirname, '../uploads', 'imgs', file);
+
+    //     if (fs.existsSync(pathImage)) {
+    //         return res.sendFile(pathImage);
+    //     }
+    // }
+    res.json({ person, patient });
+
+
+}
+
 const createPerson = async (req, res) => {
     // Subir imagen
     let image;
@@ -114,5 +164,7 @@ const updatePerson = async (req, res) => {
 
 module.exports = {
     createPerson,
-    updatePerson
+    getPersons,
+    updatePerson,
+    watchPerson,
 }
