@@ -14,6 +14,7 @@ class Server {
             auth: '/api/auth',
             persons: '/api/persons',
             roles: '/api/roles',
+            patients: '/api/patients',
             search: '/api/search',
             users: '/api/users',
             uploads: '/api/uploads',
@@ -56,6 +57,7 @@ class Server {
     routes() {
 
         this.app.use(this.paths.auth, require('../routes/auth.routes'));
+        this.app.use(this.paths.patients, require('../routes/patients.routes'));
         this.app.use(this.paths.persons, require('../routes/persons.routes'));
         this.app.use(this.paths.roles, require('../routes/roles.routes'));
         this.app.use(this.paths.search, require('../routes/search.routes'));

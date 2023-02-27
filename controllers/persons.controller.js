@@ -4,56 +4,6 @@ const fs = require('fs');
 const { uploadFile } = require("../helpers");
 const { Person, Patient } = require('../models');
 
-const getPersons = async (req, res) => {
-
-    const pat = await Patient.find()
-        .populate('person', [
-            'names',
-            'first_surname',
-            'second_surname',
-            'document_type',
-            'document_number'
-        ]);
-
-    // const { limit = 1, since = 0 } = req.query;
-    // const query = { state: true };
-
-    // const [total, patients] = await Promise.all([
-    //     Patient.countDocuments(query),
-    //     Patient.find(query)
-    //         .skip(Number(since))
-    //         .limit(Number(limit))
-    // ]);
-
-    res.json({
-        pat
-    });
-
-}
-
-const watchPerson = async (req, res) => {
-
-    const { id } = req.params;
-
-    const person = await Person.findById({ _id: id })
-
-    const patient = await Patient.findOne({ 'person': id });
-
-    // Mostrar imagen
-    // const { file } = await Person.findById({ _id: id });
-
-    // if (file) {
-    //     const pathImage = path.join(__dirname, '../uploads', 'imgs', file);
-
-    //     if (fs.existsSync(pathImage)) {
-    //         return res.sendFile(pathImage);
-    //     }
-    // }
-    res.json({ person, patient });
-
-
-}
-
 const createPerson = async (req, res) => {
     // Subir imagen
     let image;
@@ -79,6 +29,7 @@ const createPerson = async (req, res) => {
         names: body.names.toUpperCase(),
         document_type: body.document_type.toUpperCase(),
         file: image,
+        type_of_person: body.type_of_person.toUpperCase(),
         user: req.user._id
     };
 
@@ -89,17 +40,23 @@ const createPerson = async (req, res) => {
     await personDB.save();
 
     // Creación de paciente
-    const person = personDB._id;
-    const { medical_history_number } = req.body;
+    let patient;
 
-    const dataPatient = {
-        medical_history_number,
-        person
+    if (personDB.type_of_person === 'PATIENT') {
+        
+        const person = personDB._id;
+        const { medical_history_number } = req.body;
+    
+        const dataPatient = {
+            medical_history_number,
+            person
+        }
+    
+        patient = new Patient(dataPatient);
+        await patient.save();
+
     }
-
-    const patient = new Patient(dataPatient);
-    await patient.save();
-
+    
     res.status(201).json({ personDB, patient });
 
 }
@@ -123,6 +80,10 @@ const updatePerson = async (req, res) => {
 
     if (body.document_type) {
         body.document_type = body.document_type.toUpperCase();
+    }
+
+    if (body.type_of_person) {
+        body.type_of_person = body.type_of_person.toUpperCase();
     }
 
     let image;
@@ -153,18 +114,28 @@ const updatePerson = async (req, res) => {
     const personUpdate = await Person.findByIdAndUpdate(id, body, { new: true });
 
     // Actualizar paciente
-    const { _id } = await Patient.findOne({ 'person': id })
+    let patientUpdate;
+    const { type_of_person } = await Person.findOne({ '_id': id })
 
-    const patientUpdate = await Patient.findByIdAndUpdate(_id, body, { new: true });
+    if (type_of_person === 'PATIENT') {
+        const { _id } = await Patient.findOne({ 'person': id })
+        patientUpdate = await Patient.findByIdAndUpdate(_id, body, { new: true });
+    }
 
     res.json({ personUpdate, patientUpdate });
 
+}
 
+const deletePerson = async (req, res) => {
+    const { id } = req.params;
+
+    const person = await Person.findByIdAndUpdate(id, { state: false }, { new: true });
+
+    res.json(person);
 }
 
 module.exports = {
     createPerson,
-    getPersons,
+    deletePerson,
     updatePerson,
-    watchPerson,
 }

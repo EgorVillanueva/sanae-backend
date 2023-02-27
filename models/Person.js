@@ -49,6 +49,11 @@ const PersonSchema = Schema({
     file: {
         type: String
     },
+    type_of_person: {
+        type: String,
+        default: 'patient',
+        required: true
+    },
     state: {
         type: Boolean,
         default: true
