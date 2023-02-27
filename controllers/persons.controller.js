@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 
 const { uploadFile } = require("../helpers");
-const { Person, Patient } = require('../models');
+const { Person, Patient, Doctor } = require('../models');
 
 const createPerson = async (req, res) => {
     // Subir imagen
@@ -56,8 +56,26 @@ const createPerson = async (req, res) => {
         await patient.save();
 
     }
+
+    // Creación de médicos
+    let doctor;
+
+    if (personDB.type_of_person === 'DOCTOR') {
+        
+        const person = personDB._id;
+        const { cmp } = req.body;
     
-    res.status(201).json({ personDB, patient });
+        const dataDoctor = {
+            cmp,
+            person
+        }
+    
+        doctor = new Doctor(dataDoctor);
+        await doctor.save();
+
+    }
+    
+    res.status(201).json({ personDB, patient, doctor });
 
 }
 

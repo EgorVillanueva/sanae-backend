@@ -10,6 +10,10 @@ const PatientSchema = Schema({
         type: String,
         required: [true]
     },
+    // forma de ingreso
+    form_of_income: {
+        type: String,
+    },
 });
 
 PatientSchema.methods.toJSON = function () {
