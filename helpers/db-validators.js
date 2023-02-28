@@ -1,4 +1,4 @@
-const { Role, User, Person } = require('../models');
+const { Role, User, Person, Time } = require('../models');
 
 // Rol válido
 const itsValidRole = async (role = '') => {
@@ -80,6 +80,18 @@ const existsEmail = async (email = '') => {
 
 }
 
+// Verificar si existe nombre de turno
+const existsShift = async (shift = '') => {
+ 
+    const data = await Time.findOne({ shift });
+  
+    if (data) {
+        throw new Error(`El turno ${ shift } ya está registrado`);
+    }
+
+}
+
+
 module.exports = {
     existsEmail,
     existsDocument,
@@ -88,4 +100,5 @@ module.exports = {
     itsValidPerson,
     itsValidRole,
     userExistsById,
+    existsShift
 }

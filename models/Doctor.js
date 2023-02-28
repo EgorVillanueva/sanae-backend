@@ -6,6 +6,11 @@ const DoctorSchema = Schema({
         ref: 'Person',
         required: true
     },
+    specialty: {
+        type: String,
+        required: true,
+        default: 'MEDICINA FISICA'
+    },
     cmp: {
         type: String,
     },

@@ -21,6 +21,11 @@ const createPerson = async (req, res) => {
     // Creación de persona
     const { state, user, ...body } = req.body;
 
+    let specialty;
+    if (body.specialty) {
+        specialty= body.specialty.toUpperCase()
+    }
+
     // Generar data a guardar
     const data = {
         ...body,
@@ -30,11 +35,11 @@ const createPerson = async (req, res) => {
         document_type: body.document_type.toUpperCase(),
         file: image,
         type_of_person: body.type_of_person.toUpperCase(),
+        specialty: specialty,
         user: req.user._id
     };
 
     const personDB = new Person(data);
-    // const personDB = await Person.create(data);
 
     // Guardar DB
     await personDB.save();
@@ -102,6 +107,10 @@ const updatePerson = async (req, res) => {
 
     if (body.type_of_person) {
         body.type_of_person = body.type_of_person.toUpperCase();
+    }
+
+    if (body.specialty) {
+        body.specialty = body.specialty.toUpperCase();
     }
 
     let image;
