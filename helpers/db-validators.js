@@ -80,13 +80,13 @@ const existsEmail = async (email = '') => {
 
 }
 
-// Verificar si existe nombre de turno
-const existsShift = async (shift = '') => {
+// Verificar si existe dia en el turno
+const existsDay = async (day = '') => {
  
-    const data = await Time.findOne({ shift });
+    const data = await Time.findOne({ day });
   
     if (data) {
-        throw new Error(`El turno ${ shift } ya está registrado`);
+        throw new Error(`El turno ${ day } ya está registrado`);
     }
 
 }
@@ -100,5 +100,5 @@ module.exports = {
     itsValidPerson,
     itsValidRole,
     userExistsById,
-    existsShift
+    existsDay
 }

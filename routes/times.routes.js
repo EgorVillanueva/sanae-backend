@@ -6,9 +6,10 @@ const { validateJWT, hasRole } = require('../middlewares');
 
 const {
     createTime,
-    listTimes
+    listTimes,
+    updateTime
 } = require('../controllers/times.controller');
-const { existsShift } = require('../helpers');
+const { existsDay } = require('../helpers');
 
 const router = Router();
 
@@ -27,10 +28,17 @@ router.get('/', [
 router.post('/', [
     validateJWT,
     hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
-    check('shift', 'El campo turno es obligatorio').not().isEmpty(),
+    check('day', 'El campo día es obligatorio').not().isEmpty(),
     check('time', 'Ingrese las horas').toUpperCase().not().isEmpty(),
-    check('shift').toUpperCase().custom(existsShift),
+    check('day').toUpperCase().custom(existsDay),
     validateFields
 ], createTime)
+
+router.put('/', [
+    validateJWT,
+    hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
+    check('day').toUpperCase().custom(existsDay),
+    validateFields
+], updateTime)
 
 module.exports = router;

@@ -1,10 +1,9 @@
 const { Schema, model } = require('mongoose');
 
-const MedicalHourSchema = Schema({
-    shift: {
+const timeSchema = Schema({
+    day: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     time: [{
         start_time: {
@@ -24,9 +23,9 @@ const MedicalHourSchema = Schema({
     }],
 });
 
-MedicalHourSchema.methods.toJSON = function () {
-    const { __v, ...medicalHour } = this.toObject();
-    return medicalHour;
+timeSchema.methods.toJSON = function () {
+    const { __v, ...time } = this.toObject();
+    return time;
 }
 
-module.exports = model('medical_hour', MedicalHourSchema);
+module.exports = model('time', timeSchema);

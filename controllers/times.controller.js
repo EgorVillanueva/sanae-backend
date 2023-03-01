@@ -10,11 +10,11 @@ const listTimes = async (req, res) => {
 
 const createTime = async (req, res) => {
 
-    const shift = req.body.shift.toUpperCase();
+    const day = req.body.day.toUpperCase();
     const time = req.body.time;
 
     const timeCreate = new Time({
-        shift, time
+        day, time
     });
 
     await timeCreate.save();
@@ -25,7 +25,22 @@ const createTime = async (req, res) => {
 
 }
 
+const updateTime = async (req, res)  => {
+    const { id } = req.params;
+
+    const {...times} = req.body;
+
+    if (times.time) {
+        times.time = times.time.toUpperCase();
+    }
+
+    const timeUpdate = await Time.findByIdAndUpdate(id, times, { new: true })
+
+    res.json(timeUpdate);
+}
+
 module.exports = {
     createTime,
-    listTimes
+    listTimes,
+    updateTime
 }
