@@ -1,7 +1,5 @@
-const path = require('path');
-const fs = require('fs');
 
-const { Doctor, Person } = require('../models');
+const { Doctor } = require('../models');
 
 const getDoctors = async (req, res) => {
 

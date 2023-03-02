@@ -4,7 +4,7 @@ const listTimes = async (req, res) => {
 
     const list = await Time.find();
 
-    res.json({list});
+    res.json({ list });
 
 }
 
@@ -25,13 +25,13 @@ const createTime = async (req, res) => {
 
 }
 
-const updateTime = async (req, res)  => {
+const updateTime = async (req, res) => {
     const { id } = req.params;
 
-    const {...times} = req.body;
+    const { ...times } = req.body;
 
-    if (times.time) {
-        times.time = times.time.toUpperCase();
+    if (times.day) {
+        times.day = times.day.toUpperCase();
     }
 
     const timeUpdate = await Time.findByIdAndUpdate(id, times, { new: true })

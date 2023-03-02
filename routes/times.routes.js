@@ -34,7 +34,7 @@ router.post('/', [
     validateFields
 ], createTime)
 
-router.put('/', [
+router.put('/:id', [
     validateJWT,
     hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
     check('day').toUpperCase().custom(existsDay),

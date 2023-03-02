@@ -4,6 +4,7 @@ const User = require('./User');
 const Patient = require('./Patient');
 const Doctor = require('./Doctor');
 const Time = require('./time');
+const MedicalHour = require('./medical-hour');
 
 module.exports = {
     Doctor,
@@ -11,5 +12,6 @@ module.exports = {
     Person,
     Role,
     User,
-    Time
+    Time,
+    MedicalHour
 }
