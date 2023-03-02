@@ -18,19 +18,12 @@ router.get('/', [
     hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
 ], listTimes);
 
-// router.get('/:id', [
-//     validateJWT,
-//     hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
-//     check('id', 'No es un ID válido').isMongoId(),
-//     validateFields
-// ], watchDoctor);
-
 router.post('/', [
     validateJWT,
     hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
     check('day', 'El campo día es obligatorio').not().isEmpty(),
     check('time', 'Ingrese las horas').toUpperCase().not().isEmpty(),
-    check('day').toUpperCase().custom(existsDay),
+    // check('day').toUpperCase().custom(existsDay),
     validateFields
 ], createTime)
 

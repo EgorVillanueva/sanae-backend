@@ -1,6 +1,11 @@
 const { Schema, model } = require('mongoose');
 
 const timeSchema = Schema({
+    doctor: {
+        type: Schema.Types.ObjectId,
+        ref: 'Doctor',
+        required: true
+    },
     day: {
         type: String,
         required: true
@@ -9,12 +14,9 @@ const timeSchema = Schema({
         start_time: {
             type: String,
             required: true,
-            unique: true
         },
         end_time: {
             type: String,
-            required: true,
-            unique: true
         },
         status: {
             type: Boolean,

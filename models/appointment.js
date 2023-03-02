@@ -1,15 +1,14 @@
 const { Schema, model } = require('mongoose');
 
 const appointmentSchema = Schema({
-    doctor: {
+    medical_hour: {
         type: Schema.Types.ObjectId,
-        ref: 'Doctor',
+        ref: 'medical_hour',
         required: true,
-        unique: true
     },
     patient: {
         type: Schema.Types.ObjectId,
-        ref: 'Doctor',
+        ref: 'Person',
         required: true,
         unique: true
     },
