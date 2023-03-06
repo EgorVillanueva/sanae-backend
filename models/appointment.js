@@ -1,12 +1,11 @@
 const { Schema, model } = require('mongoose');
+const moment = require('moment')
 
 const appointmentSchema = Schema({
-    appointment_time: {
-        time: {
-            type: Schema.Types.ObjectId,
-            ref: 'time',
-            required: true,
-        },
+    doctor: {
+        type: Schema.Types.ObjectId,
+        ref: 'Doctor',
+        required: true,
     },
     patient: {
         type: Schema.Types.ObjectId,
@@ -14,14 +13,38 @@ const appointmentSchema = Schema({
         required: true,
     },
     date: {
-        type: Date,
+        type: String,
+        // default: moment().format('YYYY-MM-DD'),
         required: true
-    }
+    },
+    slot: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: String,
+        required: true,
+        default: 'PENDIENTE'
+    },
+    payment_status: {
+        type: String,
+        required: true,
+        default: 'PENDIENTE'
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+    created_at: {
+        type: Date,
+        default: moment() //Date.now
+    },
 });
 
 appointmentSchema.methods.toJSON = function () {
-    const { __v, ...apointment } = this.toObject();
-    return apointment;
+    const { __v, ...appointment } = this.toObject();
+    return appointment;
 }
 
-module.exports = model('apointment', appointmentSchema);
+module.exports = model('appointment', appointmentSchema);

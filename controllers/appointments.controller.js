@@ -1,20 +1,43 @@
 const moment = require('moment');
-const Appointment = require("../models");
+// moment.locale('es');
+const {Appointment} = require("../models");
 
 const createAppointment = async (req,res) => {
-
+    
+    const doctor = req.body.doctor;
     const patient = req.body.patient;
-    const appointmentTime = req.body.appointmentTime;
-    const date = moment(req.body.date).format('l');
-
-    const appointment = new Appointment({
-        patient,
-        appointmentTime,
-        date
+    const date = moment(req.body.date).format('DD-MM-YYYY');
+    const slot = req.body.slot;
+    const status = req.body.status.toUpperCase();
+    const payment_status = req.body.payment_status.toUpperCase();
+    const user = req.user._id
+    
+    const data = await Appointment.find({
+        $and: [
+            { doctor },
+            { date },
+            { slot }
+        ]
     });
-    await appointment.save();
+    console.log(data);
+    // if (data) {
+    //     return res.status(400).json({
+    //         msg: `El horario de cita seleccionada ya existe`
+    //     })
+    // }
 
-    res.json(appointment);
+    // const appointment = new Appointment({
+    //     doctor,
+    //     patient,
+    //     date,
+    //     slot,
+    //     status,
+    //     payment_status,
+    //     user
+    // });
+    // await appointment.save();
+
+    // res.json(appointment);
 
 }
 
