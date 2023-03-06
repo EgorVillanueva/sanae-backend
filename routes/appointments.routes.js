@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const { createAppointment } = require('../controllers/appointment.controller');
+const { createAppointment } = require('../controllers/appointments.controller');
 const { validateJWT } = require('../middlewares');
 
 const router = Router();

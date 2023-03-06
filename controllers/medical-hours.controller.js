@@ -11,10 +11,6 @@ const listMedicalHour = async (req, res) => {
                     select: ['names', 'first_surname', 'second_surname']
                 }
             ]
-        })
-        .populate({
-            path: 'hours.time',
-            model: 'time'
         });
 
     res.json(medicalHour);
@@ -33,10 +29,6 @@ const watchMedicalHour = async (req, res) => {
                     select: ['names', 'first_surname', 'second_surname']
                 }
             ]
-        })
-        .populate({
-            path: 'hours.time',
-            model: 'time'
         });
 
     res.json(medicalHour);

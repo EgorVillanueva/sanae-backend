@@ -6,10 +6,16 @@ const timeSchema = Schema({
         ref: 'Doctor',
         required: true
     },
-    day: {
-        type: String,
-        required: true
-    },
+    days: [{
+        day: {
+            type: String,
+            required: true
+        }
+    }],
+    // day: {
+    //     type: String,
+    //     required: true
+    // },
     time: [{
         start_time: {
             type: String,

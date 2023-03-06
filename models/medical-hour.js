@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const moment = require('moment')
 
 const medicalHourSchema = Schema({
     doctor: {
@@ -6,13 +7,32 @@ const medicalHourSchema = Schema({
         ref: 'Doctor',
         required: true
     },
-    hours: {
-        time: {
-            type: Schema.Types.ObjectId,
-            ref: 'time',
-            required: true
-        }
-    }
+    start_time: {
+        type: String,
+        default: moment().format('HH:mm'),
+        required: true,
+    },
+    end_time: {
+        type: String,
+        default: moment().format('HH:mm'),
+        required: true,
+    },
+    days: [{
+        type: String,
+        required: true,
+    }],
+    duration: {
+        type: Number,
+        required: true,
+    },
+    status: {
+        type: Boolean,
+        default: 1
+    },
+
+
+
+
 });
 
 medicalHourSchema.methods.toJSON = function () {
