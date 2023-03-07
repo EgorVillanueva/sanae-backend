@@ -24,12 +24,12 @@ const appointmentSchema = Schema({
     status: {
         type: String,
         required: true,
-        default: 'PENDIENTE'
+        default: 'PENDIENTE' // cancelado, confirmado, terminado
     },
     payment_status: {
         type: String,
         required: true,
-        default: 'PENDIENTE'
+        default: 'PENDIENTE' // pagado
     },
     user: {
         type: Schema.Types.ObjectId,

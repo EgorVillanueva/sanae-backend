@@ -1,12 +1,17 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { createAppointment } = require('../controllers/appointments.controller');
+const { createAppointment, getAppointment, updateAppointment } = require('../controllers/appointments.controller');
 const { validateJWT, hasRole, validateFields } = require('../middlewares');
 
 const router = Router();
 
-router.post('/', validateJWT, [
+router.get('/', [
+    validateJWT,
+    hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
+], getAppointment)
+
+router.post('/', [
     validateJWT,
     hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
     check('doctor', 'Ingrese un médico').not().isEmpty(),
@@ -17,5 +22,10 @@ router.post('/', validateJWT, [
     check('payment_status', 'Seleccione el estado del pago').not().isEmpty(),
     validateFields
 ], createAppointment);
+
+router.put('/:id', [
+    validateJWT,
+    hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
+], updateAppointment);
 
 module.exports = router;
