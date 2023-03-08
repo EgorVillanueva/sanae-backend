@@ -40,10 +40,10 @@ const clinicHistorySchema = Schema({
         type: String
     },
     // Signos vitales
-    vital_signs: {
-        type: Schema.Types.ObjectId,
-        ref: 'vital-sign',
-    },
+    // vital_signs: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'vital-sign',
+    // },
     // Exámenes auxiliares
     auxiliary_exams: {
         type: String

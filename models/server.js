@@ -13,6 +13,7 @@ class Server {
         this.paths = {
             appointments: '/api/appointments',
             auth: '/api/auth',
+            clinic_histories: '/api/clinic-histories',
             doctors: '/api/doctors',
             medical_hours: '/api/medical-hours',
             persons: '/api/persons',
@@ -61,6 +62,7 @@ class Server {
     routes() {
         this.app.use(this.paths.appointments, require('../routes/appointments.routes'));
         this.app.use(this.paths.auth, require('../routes/auth.routes'));
+        this.app.use(this.paths.clinic - histories, require('../routes/clinical-histories.routes'));
         this.app.use(this.paths.doctors, require('../routes/doctors.routes'));
         this.app.use(this.paths.medical_hours, require('../routes/medical-hours.routes'));
         this.app.use(this.paths.patients, require('../routes/patients.routes'));
