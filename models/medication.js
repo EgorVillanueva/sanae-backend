@@ -19,19 +19,13 @@ const medicationSchema = Schema({
     mt: {
         type: Number
     },
-    mt: {
-        type: Number
-    },
     lta: {
-        type: String
+        type: Number
     },
     elect: {
         type: Number
     },
     chc: {
-        type: Number
-    },
-    lta: {
         type: Number
     },
     us: {
@@ -43,7 +37,7 @@ const medicationSchema = Schema({
     oc: {
         type: Number
     },
-    description: {
+    description_medication: {
         type: String
     },
     sessions: {

@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const moment = require('moment')
+const moment = require('moment');
 
 const clinicHistorySchema = Schema({
     patient: {
@@ -9,7 +9,7 @@ const clinicHistorySchema = Schema({
     },
     // Tiempo de enfermedad
     sick_time: {
-        type: Number
+        type: String
     },
     // Forma de inicio
     start_form: {
@@ -39,26 +39,21 @@ const clinicHistorySchema = Schema({
     familiar: {
         type: String
     },
-    // Signos vitales
-    // vital_signs: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'vital-sign',
-    // },
     // Exámenes auxiliares
     auxiliary_exams: {
         type: String
     },
-    diagnostics: [{
-        diagnostic: {
-            type: Schema.Types.ObjectId,
-            ref: 'diagnostic',
-        }
-    }],
+    // diagnostics: [{
+    //     diagnostic: {
+    //         type: Schema.Types.ObjectId,
+    //         ref: 'diagnostic',
+    //     }
+    // }],
     // Tratamiento
-    treatment: {
-        type: Schema.Types.ObjectId,
-        ref: 'treatment',
-    },
+    // treatment: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'treatment',
+    // },
     date: {
         type: String,
         default: moment().format('DD-MM-YYYY'),

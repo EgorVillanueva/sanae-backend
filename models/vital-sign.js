@@ -19,7 +19,7 @@ const vitalSignSchema = Schema({
     fc: {
         type: Number
     },
-    description: {
+    description_vital_sign: {
         type: String
     },
     created_at: {
