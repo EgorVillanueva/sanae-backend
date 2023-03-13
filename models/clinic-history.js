@@ -43,21 +43,14 @@ const clinicHistorySchema = Schema({
     auxiliary_exams: {
         type: String
     },
-    // diagnostics: [{
-    //     diagnostic: {
-    //         type: Schema.Types.ObjectId,
-    //         ref: 'diagnostic',
-    //     }
-    // }],
-    // Tratamiento
-    // treatment: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'treatment',
-    // },
     date: {
         type: String,
         default: moment().format('DD-MM-YYYY'),
         required: true
+    },
+    status: {
+        type: String,
+        default: 'ATENDIDO'
     },
     user: {
         type: Schema.Types.ObjectId,
