@@ -11,7 +11,9 @@ const login = async (req, res = response) => {
     try {
 
         // Verificar si el usuario existe
-        const user = await User.findOne({ name });
+        const user = await User.findOne({ name }).
+            populate('person', ['first_surname', 'second_surname', 'names'])
+            .populate('role', ['role'])
 
         if (!user) {
             return res.status(400).json({
@@ -36,8 +38,8 @@ const login = async (req, res = response) => {
         }
 
         // Generar el JWT
-        const token = await generateJWT( user.id );
-        
+        const token = await generateJWT(user.id);
+
         res.json({
             user,
             token

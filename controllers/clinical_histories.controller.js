@@ -97,18 +97,20 @@ const createClinicHistory = async (req, res) => {
         description_medication,
         sessions,
     };
-
+    console.log(dataMedication.sessions);
     dataMedication.clinic_history = clinic_history;
 
-    const medication = new Medication(dataMedication);
-    await medication.save()
+    if (dataMedication.sessions !== undefined) {
+        const medication = new Medication(dataMedication);
+        await medication.save()
+
+    }
 
     res.json({
         historyDB,
         vitalSigns,
         diagnosticsDB
     })
-
 }
 
 module.exports = {
