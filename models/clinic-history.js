@@ -43,11 +43,12 @@ const clinicHistorySchema = Schema({
     auxiliary_exams: {
         type: String
     },
-    date: {
-        type: String,
-        default: moment().format('DD-MM-YYYY'),
-        required: true
-    },
+    prescriptions: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'prescription',
+        },
+    ],
     status: {
         type: String,
         default: 'ATENDIDO'
@@ -68,4 +69,4 @@ clinicHistorySchema.methods.toJSON = function () {
     return clinic_history;
 }
 
-module.exports = model('clinic-history', clinicHistorySchema);
+module.exports = model('clinic_history', clinicHistorySchema);
