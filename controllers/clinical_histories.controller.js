@@ -97,7 +97,7 @@ const createClinicHistory = async (req, res) => {
         description_medication,
         sessions,
     };
-    console.log(dataMedication.sessions);
+
     dataMedication.clinic_history = clinic_history;
 
     if (dataMedication.sessions !== undefined) {
