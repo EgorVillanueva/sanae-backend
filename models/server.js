@@ -16,13 +16,14 @@ class Server {
             clinic_histories: '/api/clinical-histories',
             doctors: '/api/doctors',
             medical_hours: '/api/medical-hours',
-            persons: '/api/persons',
-            roles: '/api/roles',
             patients: '/api/patients',
+            persons: '/api/persons',
+            prescriptions: '/api/prescriptions',
+            roles: '/api/roles',
             search: '/api/search',
             times: '/api/times',
-            users: '/api/users',
             uploads: '/api/uploads',
+            users: '/api/users',
         };
 
         // Conectar a base de datos
@@ -67,6 +68,7 @@ class Server {
         this.app.use(this.paths.medical_hours, require('../routes/medical-hours.routes'));
         this.app.use(this.paths.patients, require('../routes/patients.routes'));
         this.app.use(this.paths.persons, require('../routes/persons.routes'));
+        this.app.use(this.paths.prescriptions, require('../routes/prescriptions.routes'));
         this.app.use(this.paths.roles, require('../routes/roles.routes'));
         this.app.use(this.paths.search, require('../routes/search.routes'));
         this.app.use(this.paths.times, require('../routes/times.routes'));

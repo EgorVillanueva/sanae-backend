@@ -4,10 +4,10 @@ const moment = require('moment');
 const prescriptionSchema = Schema({
     clinic_history: {
         type: Schema.Types.ObjectId,
-        ref: 'clinic-history',
+        ref: 'clinic_history',
     },
     prescription_number: {
-        type: Number
+        type: Number,
     },
     prescription_details: [{
         diagnostic: {
@@ -21,6 +21,7 @@ const prescriptionSchema = Schema({
             type: String
         }
     }],
+    // Indicaciones generales
     general_indications: {
         type: String
     },

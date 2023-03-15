@@ -5,34 +5,78 @@ const { ClinicHistory, VitalSign, Medication, Diagnostic } = require("../models"
 const createClinicHistory = async (req, res) => {
 
     // const { created_at, ...body } = req.body;
-
-    // Datos en historia
-    const patient = req.body.patient;
-    const sick_time = req.body.sick_time.toUpperCase();
-    const start_form = req.body.start_form.toUpperCase();
-    const course = req.body.course.toUpperCase();
-    const story = req.body.story.toUpperCase();
-    const pathological_antecedents = req.body.pathological_antecedents.toUpperCase();
-    const surgical_background = req.body.surgical_background.toUpperCase();
-    const allergies = req.body.allergies.toUpperCase();
-    const familiar = req.body.familiar.toUpperCase();
-    const auxiliary_exams = req.body.auxiliary_exams.toUpperCase();
     const user = req.user._id;
+    const patient = req.body.patient;
 
-    // Datos a guardar en historia
     const data = {
         patient,
-        sick_time,
-        start_form,
-        course,
-        story,
-        pathological_antecedents,
-        surgical_background,
-        allergies,
-        familiar,
-        auxiliary_exams,
         user,
     }
+
+    // Datos en historia
+
+    if (req.body.sick_time) {
+        const sick_time = req.body.sick_time.toUpperCase();
+        data.sick_time = sick_time;
+    }
+
+    if (req.body.start_form) {
+        const start_form = req.body.start_form.toUpperCase();
+        data.start_form = start_form;
+    }
+
+    if (req.body.course) {
+        const course = req.body.course.toUpperCase();
+        data.course = course;
+    }
+
+    if (req.body.story) {
+        const story = req.body.story.toUpperCase();
+        data.story = story;
+    }
+
+    if (req.body.pathological_antecedents) {
+        const pathological_antecedents = req.body.pathological_antecedents.toUpperCase();
+        data.pathological_antecedents = pathological_antecedents;
+    }
+
+    if (req.body.surgical_background) {
+        const surgical_background = req.body.surgical_background.toUpperCase();
+        data.surgical_background = surgical_background;
+    }
+
+    if (req.body.allergies) {
+        const allergies = req.body.allergies.toUpperCase();
+        data.allergies = allergies;
+    }
+
+    if (req.body.familiar) {
+        const familiar = req.body.familiar.toUpperCase();
+        data.familiar = familiar;
+    }
+
+    if (req.body.auxiliary_exams) {
+        const auxiliary_exams = req.body.auxiliary_exams.toUpperCase();
+        data.auxiliary_exams = auxiliary_exams;
+    }
+
+
+
+    // Datos a guardar en historia
+
+    // const data = {
+    //     patient,
+    //     sick_time,
+    //     start_form,
+    //     course,
+    //     story,
+    //     pathological_antecedents,
+    //     surgical_background,
+    //     allergies,
+    //     familiar,
+    //     auxiliary_exams,
+    //     user,
+    // }
 
     const historyDB = new ClinicHistory(data);
     await historyDB.save();
@@ -83,6 +127,12 @@ const createClinicHistory = async (req, res) => {
     const description_medication = req.body.description_medication;
     const sessions = req.body.sessions;
 
+    let resp = {
+        historyDB,
+        vitalSigns,
+        diagnosticsDB,
+    }
+
     const dataMedication = {
         cf,
         pf,
@@ -97,19 +147,17 @@ const createClinicHistory = async (req, res) => {
         description_medication,
         sessions,
     };
-
     dataMedication.clinic_history = clinic_history;
 
     if (dataMedication.sessions !== undefined) {
         const medication = new Medication(dataMedication);
         await medication.save()
-
+        resp.medication = medication;
     }
 
+
     res.json({
-        historyDB,
-        vitalSigns,
-        diagnosticsDB
+        resp
     })
 }
 
