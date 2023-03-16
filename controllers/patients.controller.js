@@ -7,12 +7,15 @@ const getPatients = async (req, res) => {
 
     const patients = await Patient.find()
         .populate('person', [
-            'names',
             'first_surname',
             'second_surname',
+            'names',
+            'birthdate',
+            'gender',
             'document_type',
             'document_number',
-            'state',
+            'file',
+            'state'
         ], {state: true});
 
     // const { limit = 1, since = 0 } = req.query;
