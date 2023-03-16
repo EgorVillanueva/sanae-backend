@@ -1,23 +1,11 @@
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 
 const { uploadFile } = require("../helpers");
 const { Person, Patient, Doctor } = require('../models');
 
 
 const createPerson = async (req, res) => {
-    // Subir imagen
-    // let image;
-
-    // try {
-
-    //     // Archivos a subir
-    //     image = await uploadFile(req.files, undefined, 'imgs');
-    //     // const name = await uploadFile(req.files, ['txt', 'md'], 'documents');
-
-    // } catch (msg) {
-    //     res.status(400).json({ msg });
-    // }
 
     // Creación de persona
     const { state, user, ...body } = req.body;
@@ -34,9 +22,10 @@ const createPerson = async (req, res) => {
         second_surname: body.second_surname.toUpperCase(),
         names: body.names.toUpperCase(),
         document_type: body.document_type.toUpperCase(),
-        file: image,
         type_of_person: body.type_of_person.toUpperCase(),
         specialty: specialty,
+
+        file: req.file.path,
         user: req.user._id
     };
 
@@ -51,11 +40,24 @@ const createPerson = async (req, res) => {
     if (personDB.type_of_person === 'PATIENT') {
 
         const person = personDB._id;
-        const { medical_history_number } = req.body;
+
+        const {
+            medical_history_number,
+            relative_phone,
+        } = req.body;
 
         const dataPatient = {
             medical_history_number,
+            relative_phone,
             person
+        }
+        if (req.body.relation) {
+            const relation = req.body.relation.toUpperCase();
+            dataPatient.relation = relation;
+        }
+        if (req.body.relative_name) {
+            const relative_name = req.body.relative_name.toUpperCase();
+            dataPatient.relative_name = relative_name;
         }
 
         patient = new Patient(dataPatient);
@@ -69,11 +71,12 @@ const createPerson = async (req, res) => {
     if (personDB.type_of_person === 'DOCTOR') {
 
         const person = personDB._id;
-        const { cmp } = req.body;
+        const { specialty, cmp } = req.body;
 
         const dataDoctor = {
             cmp,
-            person
+            person,
+            specialty
         }
 
         doctor = new Doctor(dataDoctor);
@@ -126,37 +129,18 @@ const updatePerson = async (req, res) => {
     person.type_of_person = req.body.type_of_person || person.type_of_person;
 
 
-
-    let image;
-
-    try {
-
-        // Limpiar imágenes previas
-        const { file } = await Person.findById({ _id: id });
-
-        if (file) {
-            const pathImage = path.join(__dirname, '../uploads', 'imgs', file);
-
-            if (fs.existsSync(pathImage)) {
-                fs.unlinkSync(pathImage);
-            }
-        }
-
-        // Archivos a subir
-        image = await uploadFile(req.files, undefined, 'imgs');
-
-    } catch (error) {
-        console.log(error);
-    }
-
-
-    person.file = image || person.file;
-
     person.user = req.user._id
 
     let personUpdate;
 
     try {
+        const photo = await Person.findOne({ _id: id });
+        console.log(photo);
+        if (photo || photo === undefined) {
+            await fs.unlink(path.resolve(photo.file));
+        } else {
+            person.file = req.file.path;
+        }
         personUpdate = await person.save();
         res.json(personUpdate)
     } catch (error) {

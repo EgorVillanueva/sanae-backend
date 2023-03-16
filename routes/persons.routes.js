@@ -5,18 +5,21 @@ const { validateFields } = require('../middlewares/validate-fields');
 const { validateJWT, hasRole, validateFileUpload } = require('../middlewares');
 const { existsDocument, existsEmail } = require('../helpers/db-validators');
 
-const multer = require('../libs/multer');
+// const uploadFile = require('../libs/multer');
+
 
 const {
     createPerson,
     deletePerson,
     updatePerson
 } = require('../controllers/persons.controller');
+const { default: multer } = require('../libs/multer');
 
 const router = Router();
 
 router.post('/', [
     validateJWT,
+    multer.single('image'),
     hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
     check('names', 'los nombres son obligatorios').not().isEmpty(),
     check('first_surname', 'El primer apellido es obligatorio').not().isEmpty(),
@@ -26,11 +29,11 @@ router.post('/', [
     check('document_number').custom(existsDocument),
     check('email').custom(existsEmail),
     validateFields
-], multer.single('image'), createPerson);
+], createPerson);
 
 router.put('/:id', [
     validateJWT,
-    validateFileUpload,
+    multer.single('image'),
     hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
     check('id', 'No es un ID válido').isMongoId(),
     check('document_number').custom(existsDocument),

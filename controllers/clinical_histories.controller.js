@@ -4,10 +4,10 @@ const { ClinicHistory, VitalSign, Medication, Diagnostic } = require("../models"
 
 const createClinicHistory = async (req, res) => {
 
-    // const { created_at, ...body } = req.body;
     const user = req.user._id;
     const patient = req.body.patient;
 
+    // Datos a guardar en historia
     const data = {
         patient,
         user,
@@ -59,24 +59,6 @@ const createClinicHistory = async (req, res) => {
         const auxiliary_exams = req.body.auxiliary_exams.toUpperCase();
         data.auxiliary_exams = auxiliary_exams;
     }
-
-
-
-    // Datos a guardar en historia
-
-    // const data = {
-    //     patient,
-    //     sick_time,
-    //     start_form,
-    //     course,
-    //     story,
-    //     pathological_antecedents,
-    //     surgical_background,
-    //     allergies,
-    //     familiar,
-    //     auxiliary_exams,
-    //     user,
-    // }
 
     const historyDB = new ClinicHistory(data);
     await historyDB.save();

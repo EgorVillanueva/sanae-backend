@@ -10,9 +10,17 @@ const PatientSchema = Schema({
         type: String,
         required: [true]
     },
-    // forma de ingreso
-    form_of_income: {
+    // parentesco (padre, madre, hermano, hijo, pareja, otro)
+    relation: {
         type: String,
+    },
+    // Nombre de pariente
+    relative_name: {
+        type: String
+    },
+    //Telefono del pariente
+    relative_phone: {
+        type: String
     },
 });
 
