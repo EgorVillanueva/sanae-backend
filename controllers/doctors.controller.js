@@ -5,12 +5,16 @@ const getDoctors = async (req, res) => {
 
     const doctors = await Doctor.find()
         .populate('person', [
-            'names',
             'first_surname',
             'second_surname',
+            'names',
+            'birthdate',
+            'gender',
             'document_type',
-            'document_number'
-        ]);
+            'document_number',
+            'file',
+            'state'
+        ], { state: true });
 
     res.json({
         doctors
@@ -32,7 +36,8 @@ const watchDoctor = async (req, res) => {
             'document_type',
             'document_number',
             'file',
-        ]);
+            'state'
+        ], { state: true });
 
     res.json({ doctor });
 

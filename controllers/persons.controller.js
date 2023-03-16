@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
 
-const { uploadFile } = require("../helpers");
 const { Person, Patient, Doctor } = require('../models');
 
 
@@ -97,84 +96,93 @@ const updatePerson = async (req, res) => {
         const error = new Error('No encontrado');
         return res.status(400).json({ msg: error.message });
     }
-
     if (req.body.first_surname) {
         person.first_surname = req.body.first_surname.toUpperCase() || person.first_surname;
     }
-
     if (req.body.second_surname) {
         person.second_surname = req.body.second_surname.toUpperCase() || person.second_surname;
     }
-
     if (req.body.names) {
         person.names = req.body.names.toUpperCase() || person.names;
     }
-    person.birthdate = req.body.birthdate || person.birthdate;
-    person.gender = req.body.gender || person.gender;
-
     if (req.body.document_type) {
         person.document_type = req.body.document_type.toUpperCase() || person.document_type;
     }
+    if (req.body.address) {
+        person.address = req.body.address.toUpperCase() || person.address;
+    }
+    person.birthdate = req.body.birthdate || person.birthdate;
+    person.gender = req.body.gender || person.gender;
     person.document_number = req.body.document_number || person.document_number;
     person.department = req.body.department || person.department;
     person.province = req.body.province || person.province;
     person.district = req.body.district || person.district;
-
-    if (req.body.address) {
-        person.address = req.body.address.toUpperCase() || person.address;
-    }
-
     person.phone = req.body.phone || person.phone;
     person.email = req.body.email || person.email;
     person.type_of_person = req.body.type_of_person || person.type_of_person;
 
-
+    if (req.file.path) {
+        person.file = req.file.path;
+    }
     person.user = req.user._id
 
-    let personUpdate;
+    // const photo = await Person.findOne({ _id: id });
+    // console.log(photo);
+    // if (photo || photo === undefined) {
+    //     await fs.unlink(path.resolve(photo.file));
+    // } else {
+    //     person.file = req.file.path;
+    // }
 
-    try {
-        const photo = await Person.findOne({ _id: id });
-        console.log(photo);
-        if (photo || photo === undefined) {
-            await fs.unlink(path.resolve(photo.file));
-        } else {
-            person.file = req.file.path;
-        }
+    let personUpdate;
+    try { 
         personUpdate = await person.save();
-        res.json(personUpdate)
     } catch (error) {
         console.log(error);
     }
-
-    // const personUpdate = await Person.findByIdAndUpdate(id, body, { new: true });
 
     // Actualizar paciente
     let patientUpdate;
     const { type_of_person } = await Person.findOne({ '_id': id })
 
     if (type_of_person === 'PATIENT') {
-        const { _id } = await Patient.findOne({ 'person': id });
+        const patient = await Patient.findOne({ 'person': id });
 
-        const medical_history_number = req.body.medical_history_number;
-        const form_of_income = req.body.form_of_income;
-        const patientUpdateDB = {
-            medical_history_number,
-            form_of_income
+        patient.medical_history_number = req.body.medical_history_number || patient.medical_history_number;
+        patient.relative_phone = req.body.relative_phone || patient.relative_phone;
+
+        if (req.body.relation) {
+            patient.relation = req.body.relation.toUpperCase() || patient.relation;
+        }
+        if (req.body.relative_name) {
+            patient.relative_name = req.body.relative_name.toUpperCase() || patient.relative_name;
         }
 
-        patientUpdate = await Patient.findByIdAndUpdate(_id, patientUpdateDB, { new: true });
+        try { 
+            patientUpdate = await patient.save();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     // Actualizar medico
-    // if (type_of_person === 'DOCTOR') {
-    //     const { _id, specialty, cmp } = await Doctor.findOne({ 'person': id });
-    //     specialty = specialty || req.body.specialty;
-    //     cmp = cmp || req.body.cmp;
-    //     doctorUpdate = await Doctor.findByIdAndUpdate(_id, [req.body.medical_history_number, cmp], { new: true });
-    // }
+    let doctorUpdate;
+    if (type_of_person === 'DOCTOR') {
+        const doctor = await Doctor.findOne({ 'person': id });
+        console.log(doctor);
+        if (req.body.specialty) {
+            doctor.specialty = doctor.specialty || req.body.specialty.toUpperCase();
+        }
+        doctor.cmp = req.body.cmp || doctor.cmp;
 
-    // res.json(personUpdate);
+        try { 
+            doctorUpdate = await doctor.save();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    res.json({ personUpdate, patientUpdate, doctorUpdate });
 
 }
 
