@@ -4,19 +4,20 @@ const fs = require('fs');
 const { uploadFile } = require("../helpers");
 const { Person, Patient, Doctor } = require('../models');
 
+
 const createPerson = async (req, res) => {
     // Subir imagen
-    let image;
+    // let image;
 
-    try {
+    // try {
 
-        // Archivos a subir
-        image = await uploadFile(req.files, undefined, 'imgs');
-        // const name = await uploadFile(req.files, ['txt', 'md'], 'documents');
+    //     // Archivos a subir
+    //     image = await uploadFile(req.files, undefined, 'imgs');
+    //     // const name = await uploadFile(req.files, ['txt', 'md'], 'documents');
 
-    } catch (msg) {
-        res.status(400).json({ msg });
-    }
+    // } catch (msg) {
+    //     res.status(400).json({ msg });
+    // }
 
     // Creación de persona
     const { state, user, ...body } = req.body;

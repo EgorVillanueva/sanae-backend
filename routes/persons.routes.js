@@ -5,6 +5,8 @@ const { validateFields } = require('../middlewares/validate-fields');
 const { validateJWT, hasRole, validateFileUpload } = require('../middlewares');
 const { existsDocument, existsEmail } = require('../helpers/db-validators');
 
+const multer = require('../libs/multer');
+
 const {
     createPerson,
     deletePerson,
@@ -24,7 +26,7 @@ router.post('/', [
     check('document_number').custom(existsDocument),
     check('email').custom(existsEmail),
     validateFields
-], createPerson);
+], multer.single('image'), createPerson);
 
 router.put('/:id', [
     validateJWT,
