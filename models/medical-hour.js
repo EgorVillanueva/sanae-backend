@@ -8,12 +8,12 @@ const medicalHourSchema = Schema({
         required: true
     },
     start_time: {
-        type: String,
+        type: Date,
         default: moment().format('HH:mm'),
         required: true,
     },
     end_time: {
-        type: String,
+        type: Date,
         default: moment().format('HH:mm'),
         required: true,
     },

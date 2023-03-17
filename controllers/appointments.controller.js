@@ -1,8 +1,12 @@
 const moment = require('moment');
-// moment.locale('es');
+moment.locale('es');
 const { Appointment } = require("../models");
 
 const getAppointment = async (req, res) => {
+    const fecha = moment().add(1, 'days');
+    console.log(fecha);
+    console.log(fecha.format('l'));
+    console.log(fecha.format('HH:mm'));
     const appointments = await Appointment.find()
         .populate({
             path: 'doctor',
@@ -82,9 +86,9 @@ const createAppointment = async (req, res) => {
         payment_status,
         user
     });
-    await appointment.save();
+    // await appointment.save();
 
-    res.json(appointment);
+    // res.json(appointment);
 
 }
 

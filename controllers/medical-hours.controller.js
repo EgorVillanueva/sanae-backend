@@ -1,4 +1,5 @@
 const { MedicalHour } = require('../models');
+const moment = require('moment')
 
 const listMedicalHour = async (req, res) => {
 
@@ -38,7 +39,16 @@ const watchMedicalHour = async (req, res) => {
 
 const createMedicalHour = async (req, res) => {
 
-    const medicalHour = new MedicalHour(req.body);
+    const { start_time, end_time, days } = req.body;
+    const startTime = moment(start_time).format('HH:mm');
+    const endTime = moment(end_time).format('HH:mm');
+    const data = {
+        start_time: startTime,
+        end_time: endTime,
+        days
+    }
+    const medicalHour = new MedicalHour(data);
+
     await medicalHour.save();
 
     res.json(medicalHour);

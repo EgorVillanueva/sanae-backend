@@ -13,7 +13,7 @@ const appointmentSchema = Schema({
         required: true,
     },
     date: {
-        type: String,
+        type: Date,
         // default: moment().format('YYYY-MM-DD'),
         required: true
     },
