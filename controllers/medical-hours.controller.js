@@ -39,15 +39,9 @@ const watchMedicalHour = async (req, res) => {
 
 const createMedicalHour = async (req, res) => {
 
-    const { start_time, end_time, days } = req.body;
-    const startTime = moment(start_time).format('HH:mm');
-    const endTime = moment(end_time).format('HH:mm');
-    const data = {
-        start_time: startTime,
-        end_time: endTime,
-        days
-    }
-    const medicalHour = new MedicalHour(data);
+    const { __var, ...body } = req.body;
+    
+    const medicalHour = new MedicalHour(body);
 
     await medicalHour.save();
 

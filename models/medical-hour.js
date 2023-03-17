@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const moment = require('moment')
 
 const medicalHourSchema = Schema({
     doctor: {
@@ -8,13 +7,11 @@ const medicalHourSchema = Schema({
         required: true
     },
     start_time: {
-        type: Date,
-        default: moment().format('HH:mm'),
+        type: String,
         required: true,
     },
     end_time: {
-        type: Date,
-        default: moment().format('HH:mm'),
+        type: String,
         required: true,
     },
     days: [{
