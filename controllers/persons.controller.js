@@ -83,7 +83,7 @@ const createPerson = async (req, res) => {
 
     }
 
-    res.status(201).json({ personDB, patient, doctor });
+    res.status(200).json({ personDB, patient, doctor });
 
 }
 
@@ -135,7 +135,7 @@ const updatePerson = async (req, res) => {
     // }
 
     let personUpdate;
-    try { 
+    try {
         personUpdate = await person.save();
     } catch (error) {
         console.log(error);
@@ -158,7 +158,7 @@ const updatePerson = async (req, res) => {
             patient.relative_name = req.body.relative_name.toUpperCase() || patient.relative_name;
         }
 
-        try { 
+        try {
             patientUpdate = await patient.save();
         } catch (error) {
             console.log(error);
@@ -175,7 +175,7 @@ const updatePerson = async (req, res) => {
         }
         doctor.cmp = req.body.cmp || doctor.cmp;
 
-        try { 
+        try {
             doctorUpdate = await doctor.save();
         } catch (error) {
             console.log(error);

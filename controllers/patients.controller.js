@@ -16,7 +16,9 @@ const getPatients = async (req, res) => {
             'document_number',
             'file',
             'state'
-        ], {state: true});
+        ], { state: true });
+
+    console.log(patients);
 
     // const { limit = 1, since = 0 } = req.query;
     // const query = { state: true };
@@ -49,7 +51,7 @@ const watchPatient = async (req, res) => {
             'document_number',
             'file',
             'state'
-        ], { state: true});
+        ], { state: true });
 
     // const patient = await Patient.findOne({ 'person': id });
 
