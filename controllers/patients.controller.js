@@ -5,20 +5,38 @@ const { Patient, Person } = require('../models');
 
 const getPatients = async (req, res) => {
 
-    const patients = await Patient.find()
-        .populate('person', [
-            'first_surname',
-            'second_surname',
-            'names',
-            'birthdate',
-            'gender',
-            'document_type',
-            'document_number',
-            'file',
-            'state'
-        ], { state: true });
+    // const patients = await Patient.find()
+    //     .populate('person', [
+    //         'first_surname',
+    //         'second_surname',
+    //         'names',
+    //         'birthdate',
+    //         'gender',
+    //         'document_type',
+    //         'document_number',
+    //         'file',
+    //         'status'
+    //     ], { status: true });
 
-    console.log(patients);
+    // const patients = await Patient.find()
+    //     .populate({
+    //         path: 'person',
+    //         match: { status: { $status: true } },
+    //         select: 'names'
+    //     })
+    //     .exec();
+
+    let arr_data = [];
+
+    const persons = await Person.find({ type_of_person: 'PATIENT', status: true }).sort({ created_at: -1 });
+
+    for (let item of persons) {
+        let patients = await Patient.find({ person: item._id });
+        arr_data.push({
+            person: item,
+            patient: patients
+        })
+    }
 
     // const { limit = 1, since = 0 } = req.query;
     // const query = { state: true };
@@ -30,8 +48,8 @@ const getPatients = async (req, res) => {
     //         .limit(Number(limit))
     // ]);
 
-    res.json({
-        patients
+    res.status(200).json({
+        patients: arr_data
     });
 
 }
@@ -50,8 +68,8 @@ const watchPatient = async (req, res) => {
             'document_type',
             'document_number',
             'file',
-            'state'
-        ], { state: true });
+            'status'
+        ], { status: true });
 
     // const patient = await Patient.findOne({ 'person': id });
 

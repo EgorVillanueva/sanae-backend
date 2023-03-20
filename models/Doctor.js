@@ -14,6 +14,10 @@ const DoctorSchema = Schema({
     cmp: {
         type: String,
     },
+    status: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 DoctorSchema.methods.toJSON = function () {

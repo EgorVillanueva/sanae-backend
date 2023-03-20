@@ -13,8 +13,8 @@ const getDoctors = async (req, res) => {
             'document_type',
             'document_number',
             'file',
-            'state'
-        ], { state: true });
+            'status'
+        ], { status: true });
 
     res.json({
         doctors
@@ -36,11 +36,10 @@ const watchDoctor = async (req, res) => {
             'document_type',
             'document_number',
             'file',
-            'state'
-        ], { state: true });
+            'status'
+        ], { status: true });
 
     res.json({ doctor });
-
 
 }
 

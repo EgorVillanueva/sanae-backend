@@ -54,7 +54,7 @@ const PersonSchema = Schema({
         default: 'patient',
         required: true
     },
-    state: {
+    status: {
         type: Boolean,
         default: true
     },

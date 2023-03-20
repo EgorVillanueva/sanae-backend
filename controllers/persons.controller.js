@@ -7,7 +7,7 @@ const { Person, Patient, Doctor } = require('../models');
 const createPerson = async (req, res) => {
 
     // Creación de persona
-    const { state, user, ...body } = req.body;
+    const { status, user, ...body } = req.body;
 
     let specialty;
     if (body.specialty) {
@@ -189,7 +189,7 @@ const updatePerson = async (req, res) => {
 const deletePerson = async (req, res) => {
     const { id } = req.params;
 
-    const person = await Person.findByIdAndUpdate(id, { state: false }, { new: true });
+    const person = await Person.findByIdAndUpdate(id, { status: false }, { new: true });
 
     res.json(person);
 }

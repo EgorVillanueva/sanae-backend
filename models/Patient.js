@@ -22,6 +22,10 @@ const PatientSchema = Schema({
     relative_phone: {
         type: String
     },
+    status: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 PatientSchema.methods.toJSON = function () {
