@@ -188,10 +188,23 @@ const updatePerson = async (req, res) => {
 
 const deletePerson = async (req, res) => {
     const { id } = req.params;
-
+    const personDeleted = {}
     const person = await Person.findByIdAndUpdate(id, { status: false }, { new: true });
+    personDeleted.person = person;
 
-    res.json(person);
+    if (person.type_of_person === 'PATIENT') {
+        const { _id } = await Patient.findOne({'person': person._id})
+        const patient = await Patient.findByIdAndUpdate(_id, { status: false }, { new: true })
+        personDeleted.patient = patient
+    }
+
+    if (person.type_of_person === 'DOCTOR') {
+        const { _id } = await Doctor.findOne({'person': person._id})
+        const doctor = await Doctor.findByIdAndUpdate(_id, { status: false }, { new: true })
+        personDeleted.doctor = doctor
+    }
+
+    res.status(200).json(personDeleted)
 }
 
 module.exports = {

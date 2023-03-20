@@ -5,38 +5,44 @@ const { Patient, Person } = require('../models');
 
 const getPatients = async (req, res) => {
 
-    // const patients = await Patient.find()
-    //     .populate('person', [
-    //         'first_surname',
-    //         'second_surname',
-    //         'names',
-    //         'birthdate',
-    //         'gender',
-    //         'document_type',
-    //         'document_number',
-    //         'file',
-    //         'status'
-    //     ], { status: true });
+    const patients = await Patient.find({status: true})
+        .populate('person', [
+            'first_surname',
+            'second_surname',
+            'names',
+            'birthdate',
+            'gender',
+            'document_type',
+            'document_number',
+            'file',
+            'status'
+        ]);
 
-    // const patients = await Patient.find()
-    //     .populate({
-    //         path: 'person',
-    //         match: { status: { $status: true } },
-    //         select: 'names'
-    //     })
-    //     .exec();
+        res.status(200).json(patients);
 
-    let arr_data = [];
+    // let arr_data = [];
 
-    const persons = await Person.find({ type_of_person: 'PATIENT', status: true }).sort({ created_at: -1 });
+    // const persons = await Person.find({ type_of_person: 'PATIENT', status: true }).sort({ created_at: -1 });
+    // console.log(persons);
 
-    for (let item of persons) {
-        let patients = await Patient.find({ person: item._id });
-        arr_data.push({
-            person: item,
-            patient: patients
-        })
-    }
+    // for (let item of persons) {
+        
+    //     let patients = await Patient.find({ person: item._id });
+    //     console.log(patients);
+    //     // arr_data ={
+    //     //     ...item,
+    //     //     ...patients
+    //     // }
+       
+    //     // if (item.status) {
+    //         // arr_data.patient = patients;
+    //         // arr_data.person = item;
+    //         arr_data.push({
+    //             person: item,
+    //             patient: patients
+    //         })
+    //     // }
+    // }
 
     // const { limit = 1, since = 0 } = req.query;
     // const query = { state: true };
@@ -48,9 +54,7 @@ const getPatients = async (req, res) => {
     //         .limit(Number(limit))
     // ]);
 
-    res.status(200).json({
-        patients: arr_data
-    });
+    // res.status(200).json(arr_data);
 
 }
 
