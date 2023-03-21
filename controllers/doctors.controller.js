@@ -3,7 +3,7 @@ const { Doctor } = require('../models');
 
 const getDoctors = async (req, res) => {
 
-    const doctors = await Doctor.find()
+    const doctors = await Doctor.find({ status: true })
         .populate('person', [
             'first_surname',
             'second_surname',
@@ -14,9 +14,9 @@ const getDoctors = async (req, res) => {
             'document_number',
             'file',
             'status'
-        ], { status: true });
+        ]);
 
-    res.json({
+    res.status(200).json({
         doctors
     });
 
@@ -26,7 +26,7 @@ const watchDoctor = async (req, res) => {
 
     const { id } = req.params;
 
-    const doctor = await Doctor.findById({ _id: id })
+    const doctor = await Doctor.findOne({ _id: id, status: true })
         .populate('person', [
             'first_surname',
             'second_surname',
@@ -37,7 +37,7 @@ const watchDoctor = async (req, res) => {
             'document_number',
             'file',
             'status'
-        ], { status: true });
+        ]);
 
     res.json({ doctor });
 

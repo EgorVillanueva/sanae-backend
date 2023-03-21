@@ -62,7 +62,7 @@ const watchPatient = async (req, res) => {
 
     const { id } = req.params;
 
-    const patient = await Patient.findById({ _id: id })
+    const patient = await Patient.findOne({ _id: id, status: true  })
         .populate('person', [
             'first_surname',
             'second_surname',
@@ -73,7 +73,7 @@ const watchPatient = async (req, res) => {
             'document_number',
             'file',
             'status'
-        ], { status: true });
+        ]);
 
     // const patient = await Patient.findOne({ 'person': id });
 
