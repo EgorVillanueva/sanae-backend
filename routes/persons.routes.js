@@ -11,11 +11,17 @@ const { existsDocument, existsEmail } = require('../helpers/db-validators');
 const {
     createPerson,
     deletePerson,
-    updatePerson
+    updatePerson,
+    showImage
 } = require('../controllers/persons.controller');
 const { default: multer } = require('../libs/multer');
 
 const router = Router();
+
+router.get('/:id', [
+    validateJWT,
+    hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
+], showImage);
 
 router.post('/', [
     validateJWT,

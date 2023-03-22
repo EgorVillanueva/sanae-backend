@@ -3,6 +3,13 @@ const fs = require('fs-extra');
 
 const { Person, Patient, Doctor } = require('../models');
 
+const showImage = async (req, res) => {
+    const { id } = req.params;
+
+    res.json({
+        id
+    })
+}
 
 const createPerson = async (req, res) => {
 
@@ -211,4 +218,5 @@ module.exports = {
     createPerson,
     deletePerson,
     updatePerson,
+    showImage,
 }
