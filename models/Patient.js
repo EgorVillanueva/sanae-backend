@@ -8,7 +8,7 @@ const PatientSchema = Schema({
     },
     medical_history_number: {
         type: String,
-        required: [true]
+        default: "5536"
     },
     // parentesco (padre, madre, hermano, hijo, pareja, otro)
     relation: {
