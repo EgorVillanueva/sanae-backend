@@ -44,7 +44,7 @@ const createPerson = async (req, res) => {
         gender: body.gender.toUpperCase(),
         specialty: specialty,
 
-        file: req.file.path,
+        // file: req.file.path,
         user: req.user._id
     };
 
@@ -145,9 +145,9 @@ const updatePerson = async (req, res) => {
     person.email = req.body.email || person.email;
     person.type_of_person = req.body.type_of_person || person.type_of_person;
 
-    if (req.file.path) {
-        person.file = req.file.path;
-    }
+    // if (req.file.path) {
+    //     person.file = req.file.path;
+    // }
     person.user = req.user._id
 
     // const photo = await Person.findOne({ _id: id });
