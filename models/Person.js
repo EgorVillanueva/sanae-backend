@@ -17,7 +17,7 @@ const PersonSchema = Schema({
         type: Date
     },
     gender: {
-        type: Boolean
+        type: String
     },
     document_type: {
         type: String
@@ -47,6 +47,7 @@ const PersonSchema = Schema({
         unique: true
     },
     file: {
+        data: Buffer,
         type: String
     },
     type_of_person: {

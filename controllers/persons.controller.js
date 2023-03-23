@@ -6,9 +6,21 @@ const { Person, Patient, Doctor } = require('../models');
 const showImage = async (req, res) => {
     const { id } = req.params;
 
-    res.json({
-        id
-    })
+    const image = await Person.findById(id);
+    console.log(image.file);
+    res.contentType('image/jpg');
+    res.send(image.file)
+    // console.log(image);
+
+    // await Person.findOne({ _id: id }, (err, result) => {
+    //     if (err) return console.log(err);
+
+    //     console.log(result);
+    // })
+
+    // res.json({
+    //     id
+    // })
 }
 
 const createPerson = async (req, res) => {
@@ -29,6 +41,7 @@ const createPerson = async (req, res) => {
         names: body.names.toUpperCase(),
         document_type: body.document_type.toUpperCase(),
         type_of_person: body.type_of_person.toUpperCase(),
+        gender: body.gender.toUpperCase(),
         specialty: specialty,
 
         file: req.file.path,
@@ -118,8 +131,12 @@ const updatePerson = async (req, res) => {
     if (req.body.address) {
         person.address = req.body.address.toUpperCase() || person.address;
     }
+
+    if (req.body.gender) {
+        person.gender = req.body.gender.toUpperCase() || person.gender;
+    }
+
     person.birthdate = req.body.birthdate || person.birthdate;
-    person.gender = req.body.gender || person.gender;
     person.document_number = req.body.document_number || person.document_number;
     person.department = req.body.department || person.department;
     person.province = req.body.province || person.province;
@@ -200,13 +217,13 @@ const deletePerson = async (req, res) => {
     personDeleted.person = person;
 
     if (person.type_of_person === 'PATIENT') {
-        const { _id } = await Patient.findOne({'person': person._id})
+        const { _id } = await Patient.findOne({ 'person': person._id })
         const patient = await Patient.findByIdAndUpdate(_id, { status: false }, { new: true })
         personDeleted.patient = patient
     }
 
     if (person.type_of_person === 'DOCTOR') {
-        const { _id } = await Doctor.findOne({'person': person._id})
+        const { _id } = await Doctor.findOne({ 'person': person._id })
         const doctor = await Doctor.findByIdAndUpdate(_id, { status: false }, { new: true })
         personDeleted.doctor = doctor
     }

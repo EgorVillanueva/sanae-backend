@@ -18,10 +18,7 @@ const { default: multer } = require('../libs/multer');
 
 const router = Router();
 
-router.get('/:id', [
-    validateJWT,
-    hasRole('ADMIN_ROLE', 'USER_ROLE', 'DOCTOR_ROLE'),
-], showImage);
+router.get('/:id', showImage);
 
 router.post('/', [
     validateJWT,
