@@ -13,18 +13,22 @@ const login = async (req, res = response) => {
         // Verificar si el usuario existe
         const user = await User.findOne({ name })
             .populate('person', ['first_surname', 'second_surname', 'names'])
-            .populate('role', ['role'])
+            .populate('role', ['role']);
+
+
 
         if (!user) {
-            return res.status(400).json({
-                msg: 'Usuario / Password no son correctos - usuario'
+            return res.status(200).json({
+                msg: 'Usuario / Password no son correctos - usuario',
+                ok: false,
             })
         }
 
         // Si el usuario está activo
         if (!user.state) {
-            return res.status(400).json({
-                msg: 'Usuario / Password no son correctos - estado: false'
+            return res.status(200).json({
+                msg: 'Usuario / Password no son correctos - estado: false',
+                ok: false,
             })
         }
 
@@ -32,8 +36,9 @@ const login = async (req, res = response) => {
         const validPassword = bcryptjs.compareSync(password, user.password);
 
         if (!validPassword) {
-            return res.status(400).json({
-                msg: 'Usuario / Password no son correctos - password'
+            return res.status(200).json({
+                msg: 'Usuario / Password no son correctos - password',
+                ok: false,
             })
         }
 

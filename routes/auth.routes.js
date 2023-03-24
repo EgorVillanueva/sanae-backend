@@ -8,7 +8,7 @@ const router = Router();
 
 router.post('/login', [
     check('name', 'El usuario es obligatorio').not().isEmpty(),
-    check('password', 'La contrase;a es obligatoria').not().isEmpty(),
+    check('password', 'La contraseña es obligatoria').not().isEmpty(),
     validateFields
 ], login);
 
