@@ -26,10 +26,6 @@ const medicalHourSchema = Schema({
         type: Boolean,
         default: 1
     },
-
-
-
-
 });
 
 medicalHourSchema.methods.toJSON = function () {

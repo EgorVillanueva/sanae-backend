@@ -1,10 +1,11 @@
 const path = require('path');
 const fs = require('fs');
+const moment = require('moment')
 
 const { Patient, Person } = require('../models');
 
 const getPatients = async (req, res) => {
-
+    
     const patients = await Patient.find({status: true})
         .populate('person', [
             'first_surname',

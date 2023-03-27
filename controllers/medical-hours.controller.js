@@ -9,7 +9,7 @@ const listMedicalHour = async (req, res) => {
             populate: [
                 {
                     path: 'person',
-                    select: ['names', 'first_surname', 'second_surname']
+                    select: ['names', 'first_surname', 'second_surname', 'birthdate']
                 }
             ]
         });
@@ -40,9 +40,12 @@ const watchMedicalHour = async (req, res) => {
 const createMedicalHour = async (req, res) => {
 
     const { __var, ...body } = req.body;
-    
+    console.log(body.start_time);
+    body.start_time = moment(body.start_time, 'HH:mm');
+    console.log(body.start_time);
+    body.end_time = moment(body.end_time, 'HH:mm');
     const medicalHour = new MedicalHour(body);
-
+    
     await medicalHour.save();
 
     res.json(medicalHour);

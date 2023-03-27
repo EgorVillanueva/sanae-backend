@@ -1,14 +1,6 @@
 const moment = require('moment');
 moment.locale('es');
-const { Appointment } = require("../models");
-
-const getSlotAppointments = async (req, res) => {
-
-    const { id } = req.params;
-
-    // const doctor = 
-
-}
+const { Appointment, Person } = require("../models");
 
 const getAppointment = async (req, res) => {
     // const fecha = moment();
@@ -16,6 +8,7 @@ const getAppointment = async (req, res) => {
     // console.log(fecha.add(1, 'days'));
     // console.log(fecha.format('l'));
     // console.log(fecha.format('HH:mm'));
+    
     const appointments = await Appointment.find()
         .populate({
             path: 'doctor',
@@ -27,7 +20,7 @@ const getAppointment = async (req, res) => {
             ]
         });
 
-    res.json(appointments)
+    res.json({appointments})
 }
 
 const createAppointment = async (req, res) => {
@@ -134,6 +127,5 @@ const updateAppointment = async (req, res) => {
 module.exports = {
     createAppointment,
     getAppointment,
-    getSlotAppointments,
     updateAppointment
 }
