@@ -37,7 +37,7 @@ const getBookAppointment = async (req, res) => {
 
     const slots = allSlots.map(slot =>
         // slot.startTime + '-' + slot.endTime
-        moment(slot.from).add(5, 'hours').format('LT') + ' - ' + moment(slot.to).add(5, 'hours').format('LT')
+        moment(slot.from).add(5, 'hours').format('LT')
         // moment().hour(slot.from) + '/' + slot.to
         // moment(slot.from, ['DDMMMMY HH:mm:ss', 'MMMMDDY HH:mm:ss']).add(24, 'hours').format('HH:mm')
         // moment(slot.from).locale('es-pe').format('YYYY-MM-DD HH:mm:ss')
